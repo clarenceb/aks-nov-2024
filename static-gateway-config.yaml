@@ -1,0 +1,15 @@
+apiVersion: egressgateway.kubernetes.azure.com/v1alpha1
+kind: StaticGatewayConfiguration
+metadata:
+  name: mydemo-static-gateway-config
+  namespace: default
+spec:
+  gatewayNodepoolName: staticegress
+  excludeCidrs:  # Optional
+  - 10.0.0.0/8
+  - 172.16.0.0/12
+  - 169.254.169.254/32
+  defaultRoute: staticEgressGateway
+  # defaultRoute: azureNetworking
+  provisionPublicIps: true
+  # publicIpPrefixId: /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Network/publicIPPrefixes/<prefix-name> # Optional

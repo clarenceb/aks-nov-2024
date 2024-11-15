@@ -1,0 +1,27 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-bing-fqdn"
+spec:
+  endpointSelector:
+    matchLabels:
+      app: demo-container
+  egress:
+    - toEndpoints:
+      - matchLabels:
+          "k8s:io.kubernetes.pod.namespace": kube-system
+          "k8s:k8s-app": kube-dns
+      toPorts:
+        - ports:
+           - port: "53"
+             protocol: ANY
+          rules:
+          # See: https://learn.microsoft.com/en-us/azure/aks/advanced-network-container-services-security-concepts#limitations
+            dns:
+              - matchPattern: "*.bing.com"
+              - matchPattern: "*.bing.com.*.*"
+              - matchPattern: "*.bing.com.*.*.*"
+              - matchPattern: "*.bing.com.*.*.*.*"
+              - matchPattern: "*.bing.com.*.*.*.*.*"
+    - toFQDNs:
+      - matchPattern: "*.bing.com"
